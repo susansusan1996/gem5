@@ -1,0 +1,10 @@
+
+// 在 SetConfig 中找到合適的位置插入以下代碼
+// 通常在設置完所有其他組件後，return true 之前
+
+// 創建並配置 StartGap
+if (startGap == NULL) {
+    startGap = new StartGap();
+    std::cout << "[NVMain] Creating StartGap wear leveling module..." << std::endl;
+}
+

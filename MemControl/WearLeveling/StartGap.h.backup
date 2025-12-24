@@ -1,0 +1,30 @@
+#ifndef __STARTGAP_H__
+#define __STARTGAP_H__
+
+#include "src/NVMObject.h"
+#include <stdint.h>
+
+namespace NVM {
+
+class StartGap : public NVMObject {
+  public:
+    StartGap();
+    ~StartGap();
+    
+    uint64_t LogicalToPhysical(uint64_t logicalAddr);
+    void OnWrite(uint64_t addr);
+    void PrintStats();
+    
+  private:
+    uint64_t startReg;
+    uint64_t gapReg;
+    uint64_t numLines;
+    uint64_t psi;
+    uint64_t writeCounter;
+    uint64_t totalWrites;
+    uint64_t totalGapMovements;
+};
+
+}
+
+#endif
