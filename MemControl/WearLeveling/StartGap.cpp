@@ -7,8 +7,8 @@ using namespace NVM;
 
 StartGap::StartGap() {
     // 初始化 Start-Gap 暫存器
-    numLines = 1048576;  // 1M cache lines
-    psi = 100;           // 每 100 次寫入移動 Gap
+    numLines = 1000;  // 1萬 cache lines
+    psi = 2;           // 每 2 次寫入移動 Gap
     startReg = 0;
     gapReg = numLines;   // Gap 初始在範圍外
     

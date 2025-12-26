@@ -3,21 +3,27 @@
 步驟 5: 分析實驗結果
 
 解析 NVMain 輸出，比較不同模式下的磨損情況
+結果檔案位於 /work 目錄
 """
 
 import re
 import sys
 import os
 
+# 定義結果檔案目錄
+RESULT_DIR = '/work/my_result'
+
 def parse_startgap_stats(filename):
     """
     從 NVMain 輸出檔案中解析 Start-Gap 統計資訊
     """
-    if not os.path.exists(filename):
-        print(f"警告: 檔案 {filename} 不存在")
+    filepath = os.path.join(RESULT_DIR, filename)
+    
+    if not os.path.exists(filepath):
+        print(f"警告: 檔案 {filepath} 不存在")
         return None
     
-    with open(filename, 'r') as f:
+    with open(filepath, 'r') as f:
         content = f.read()
     
     # 定義正則表達式
@@ -92,17 +98,29 @@ def analyze_results():
     print(" 步驟 5: 分析實驗結果")
     print("=" * 80)
     print()
+    print(f"讀取結果檔案目錄: {RESULT_DIR}")
+    print()
     
     # 解析各實驗結果
     print("讀取實驗輸出檔案...")
     exp1 = parse_startgap_stats('exp1_hotspot.txt')
     exp2 = parse_startgap_stats('exp2_uniform.txt')
-    exp3 = parse_startgap_stats('exp3_sequential.txt') if os.path.exists('exp3_sequential.txt') else None
+    
+    # 檢查實驗 3 是否存在
+    exp3_path = os.path.join(RESULT_DIR, 'exp3_sequential.txt')
+    exp3 = parse_startgap_stats('exp3_sequential.txt') if os.path.exists(exp3_path) else None
     
     if not exp1 or not exp2:
         print("錯誤: 無法讀取實驗結果！")
-        print("請確認已執行 step4_run_experiments.sh")
+        print("請確認已執行 step4_run_experiments_v2.sh")
+        print()
+        print("預期檔案位置:")
+        print(f"  - {RESULT_DIR}/exp1_hotspot.txt")
+        print(f"  - {RESULT_DIR}/exp2_uniform.txt")
         return
+    
+    print("✓ 成功讀取實驗結果")
+    print()
     
     # 顯示對比表
     print_comparison_table(exp1, exp2, exp3)

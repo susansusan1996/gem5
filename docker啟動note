@@ -1,0 +1,15 @@
+# 如果需要重新掛載新的腳本
+docker build -t gem5-nvmain:latest .
+
+# 啟動新容器 (把linux主機的gem5-work資料夾掛載到docker裡的work資料夾，兩邊的資料會連動)
+docker run -dit \
+  --name gem5-nvmain \
+  --hostname gem5-dev \
+  --memory="16g" \
+  -v ~/gem5-work:/work \
+  gem5-nvmain:latest
+
+# 進入容器
+docker exec -it gem5-nvmain bash
+cd /work
+./nvmain.fast Config/PCM_ISSCC_2012_4GB.config test_150_writes.trace 200000
